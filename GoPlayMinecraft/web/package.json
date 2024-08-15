@@ -1,0 +1,12 @@
+{
+    "name": "minecraft-server-host",
+    "version": "1.0.0",
+    "description": "A web interface to control a Minecraft server",
+    "main": "app.py",
+    "scripts": {
+        "start": "python app.py"
+    },
+    "dependencies": {
+        "flask": "^2.0.1"
+    }
+}
