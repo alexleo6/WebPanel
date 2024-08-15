@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Server Control</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Minecraft Server Control</h1>
+        <button id="startBtn">Start Server</button>
+        <button id="stopBtn">Stop Server</button>
+        <button id="restartBtn">Restart Server</button>
+        <div class="server-info" id="serverInfo">Server IP: Not running</div>
+        <form id="uploadForm" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div>{{ form.plugin.label }} {{ form.plugin(class="form-control") }}</div>
+            <button type="button" id="uploadBtn">Upload Plugin</button>
+        </form>
+        <a href="{{ url_for('console') }}">View Console</a>
+    </div>
+
+    <script>
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const serverInfo = document.getElementById('serverInfo');
+        const uploadForm = document.getElementById('uploadForm');
+        const uploadBtn = document.getElementById('uploadBtn');
+
+        startBtn.addEventListener('click', () => {
+            fetch('/start', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status) {
+                        alert(data.status);
+                        serverInfo.textContent = `Server IP: ${data.ip}:${data.port}`;
+                    } else if (data.error) {
+                        alert(`Error: ${data.error}`);
+                    } else {
+                        alert('Unknown response');
+                    }
+                })
+                .catch(error => alert(`Error: ${error}`));
+        });
+
+        stopBtn.addEventListener('click', () => {
+            fetch('/stop', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status) {
+                        alert(data.status);
+                        serverInfo.textContent = "Server IP: Not running";
+                    } else if (data.error) {
+                        alert(`Error: ${data.error}`);
+                    } else {
+                        alert('Unknown response');
+                    }
+                })
+                .catch(error => alert(`Error: ${error}`));
+        });
+
+        restartBtn.addEventListener('click', () => {
+            fetch('/restart', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status) {
+                        alert(data.status);
+                        serverInfo.textContent = `Server IP: ${data.ip}:${data.port}`;
+                    } else if (data.error) {
+                        alert(`Error: ${data.error}`);
+                    } else {
+                        alert('Unknown response');
+                    }
+                })
+                .catch(error => alert(`Error: ${error}`));
+        });
+
+        uploadBtn.addEventListener('click', () => {
+            fetch('/upload_plugin', {
+                method: 'POST',
+                body: new FormData(uploadForm)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => alert(`Error: ${error}`));
+        });
+    </script>
+</body>
+</html>

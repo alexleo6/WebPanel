@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Console Pin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Console Pin</h1>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div>{{ form.pin.label }} {{ form.pin(class="form-control") }}</div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
